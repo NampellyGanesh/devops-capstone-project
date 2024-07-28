@@ -16,12 +16,12 @@ jobs:
         ports: 5432:5432
         env: 
           POSTGRES_PASSWORD: pgs3cr3t
-          POSTGRES_DB: testdb
-    options:
-      --health-cmd pg_isready
-      --health-interval 10s
-      --health-timeout 5s
-      --health-retries 5
+          POSTGRES_DB: testdb   
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     
     steps:
       - name: checkout
@@ -40,3 +40,5 @@ jobs:
       - name: Run unit tests with nose
         run: |
           nosetests -v --with-spec --spec-color --with-coverage --cover-package=app
+        env:
+          DATABASE_URI: "postgresql://postgres:{password}@{service}:{port}/{database}"
